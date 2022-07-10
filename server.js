@@ -3,10 +3,8 @@ const MongoClient = require("mongodb").MongoClient;
 const bodyParser = require("body-parser");
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-
 const connectionString =
-  "mongodb+srv://raza:<password>@@cluster0.j5hy0dq.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://raza_2:zone123@cluster0.j5hy0dq.mongodb.net/?retryWrites=true&w=majority";
 
 MongoClient.connect(connectionString)
   .then((client) => {
@@ -14,10 +12,16 @@ MongoClient.connect(connectionString)
     const db = client.db("star-wars-quotes");
     const quotesCollection = db.collection("quotes");
 
+    // Middlewares
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.set("view engine", "ejs");
     app.use(express.static("public"));
     app.use(bodyParser.json());
 
+
+    // Routes
+
+    //insert
     app.post("/quotes", (req, res) => {
       quotesCollection
         .insertOne(req.body)
@@ -28,17 +32,19 @@ MongoClient.connect(connectionString)
         .catch((err) => console.error(err));
     });
 
-  app.get("/", (req, res) => {
+    //find
+    app.get("/", (req, res) => {
       db.collection("quotes")
         .find()
         .toArray()
-        .then((result) => {
-          res.render("index.ejs", { quotes: result });
-          //console.log(result);
+        .then((quotes) => {
+          console.log(quotes);
+          res.render("index.ejs", { quotes: quotes });
         })
-        .catch((err) => console.error(err));
+        .catch((error) => console.error(error));
     });
 
+    //update
     app.put("/quotes", (req, res) => {
       quotesCollection
         .findOneAndUpdate(
@@ -59,9 +65,9 @@ MongoClient.connect(connectionString)
           res.json("Success!");
         })
         .catch((err) => console.error(err));
-      //console.log(req.body);
     });
 
+    //delete
     app.delete("/quotes", (req, res) => {
       quotesCollection
         .deleteOne({ name: req.body.name })
@@ -73,10 +79,9 @@ MongoClient.connect(connectionString)
         })
         .catch((err) => console.error(err));
     });
+
     app.listen(3000, () => {
-        console.log("listening on 3000");
+      console.log("listening on 3000");
     });
-})
-.catch((error) => console.error(error));
-
-
+  })
+  .catch((error) => console.error(error));
