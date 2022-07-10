@@ -1,0 +1,28 @@
+{
+  "name": "crudapp2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mnrazamohamed/CRUDAPP2.git"
+  },
+  "author": "Raza Mohamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mnrazamohamed/CRUDAPP2/issues"
+  },
+  "homepage": "https://github.com/mnrazamohamed/CRUDAPP2#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mongodb": "^4.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
